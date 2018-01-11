@@ -1,0 +1,12 @@
+---
+- name: Create Data Dir
+  file:  path={{item}} state=directory owner={{ user }} group={{ group}} mode="u=rwx,g=r,o=r"
+  with_items:
+    - "{{ install_dir }}/{{ data_dir }}"
+    - "{{ zookeeper_log_path }}"
+
+- name: Copy Package
+  copy: src={{ download_path }}/zookeeper-{{zookeeper_version}}.tar.gz dest={{ tmp_path }} owner={{ user }} mode=755
+
+- name: Extract zookeeper archive
+  command: chdir={{install_dir}}/ /bin/tar xvf {{ tmp_path }}/zookeeper-{{zookeeper_version}}.tar.gz -C {{install_dir}}/ 
